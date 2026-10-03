@@ -1,4 +1,4 @@
-# photobooth-project
+# Photobooth Project
  
  I MADE IT - harshini
 
