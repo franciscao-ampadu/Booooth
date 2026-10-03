@@ -58,3 +58,57 @@ function tone(freq, dur, type = "sine", endFreq = freq) {
 const beep = () => tone(880, 0.12);
 const shutterClick = () => tone(900, 0.12, "square", 120);
 
+/* ---------- Taking the shots ---------- */
+function captureFrame() {
+  const c = document.createElement("canvas");
+  c.width = FRAME_W;
+  c.height = FRAME_H;
+  const ctx = c.getContext("2d");
+
+  // Centre-crop the video to 4:3
+  const vw = video.videoWidth, vh = video.videoHeight;
+  let sw = vw, sh = vh, sx = 0, sy = 0;
+  if (vw / vh > 4 / 3) { sw = vh * 4 / 3; sx = (vw - sw) / 2; }
+  else { sh = vw * 3 / 4; sy = (vh - sh) / 2; }
+
+  // Mirror so the photo matches the preview
+  ctx.translate(FRAME_W, 0);
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, FRAME_W, FRAME_H);
+  return c;
+}
+
+function flashScreen() {
+  shotFlash.classList.remove("shot-flash");
+  void shotFlash.offsetWidth; // restart the animation
+  shotFlash.classList.add("shot-flash");
+}
+
+async function runBooth() {
+  startBtn.disabled = true;
+  shots = [];
+  thumbs.forEach((t) => (t.style.backgroundImage = ""));
+
+  for (let i = 0; i < 4; i++) {
+    for (let n = 3; n >= 1; n--) {
+      countdownEl.textContent = n;
+      beep();
+      await sleep(1000);
+    }
+    countdownEl.textContent = "";
+    shots.push(captureFrame());
+    flashScreen();
+    shutterClick();
+    thumbs[i].style.backgroundImage = `url(${shots[i].toDataURL("image/jpeg", 0.6)})`;
+    await sleep(700);
+  }
+
+  takenAt = new Date()
+    .toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    .toUpperCase();
+  stage.hidden = true;
+  review.hidden = false;
+  await drawStrip(true);
+}
+
+
