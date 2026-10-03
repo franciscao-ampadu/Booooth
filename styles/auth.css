@@ -1,0 +1,135 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px 20px;
+}
+
+.camera {
+  position: relative;
+  width: min(92vw, 400px);
+}
+.camera.shooting { animation: camera-zoom 0.65s ease-in forwards; }
+@keyframes camera-zoom { to { transform: scale(1.18); } }
+
+/* Viewfinder bump on top */
+.camera-bump {
+  position: absolute;
+  top: -20px;
+  left: 40px;
+  width: 80px;
+  height: 28px;
+  background: var(--paper);
+  border: 3.5px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 14px 30px 0 0 / 14px 20px 0 0;
+}
+
+.camera-body {
+  background: var(--paper);
+  border: 3.5px solid var(--ink);
+  padding: 28px 24px 24px;
+}
+
+.camera-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.camera-flash-window {
+  width: 48px;
+  height: 24px;
+  border: 3px solid var(--ink);
+  border-radius: 4px 10px 4px 8px;
+}
+.camera-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+/* Lens holds the form */
+.lens-outer {
+  aspect-ratio: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3.5px solid var(--ink);
+  padding: 12px;
+}
+.lens-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  background: #fff;
+}
+.login-form {
+  width: 74%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.login-form .tagline {
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 20px;
+}
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-hand);
+  font-size: 16px;
+  color: var(--muted);
+}
+.login-form input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid var(--ink);
+  padding: 6px 2px;
+  font-family: var(--font-hand);
+  font-size: 20px;
+  color: var(--ink);
+  outline: none;
+}
+.login-form input:focus { border-bottom-color: var(--accent); }
+
+/* Shutter button */
+.shutter-wrap {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-hand);
+  font-size: 16px;
+}
+.shutter {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3.5px solid var(--ink);
+  background: #eef0f3;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.15s;
+}
+.shutter:hover { background: var(--accent); }
+.shutter:active { transform: scale(0.92); }
+.shutter:disabled { cursor: default; }
+
+.back-link { font-family: var(--font-hand); font-size: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .camera.shooting { animation: none; }
+}

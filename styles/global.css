@@ -1,0 +1,66 @@
+:root {
+  --paper: #f5f4f1;
+  --ink: #141414;
+  --muted: #6b7280;
+  --body: #4b5563;
+  --accent: #ff4d6d;
+  --friend: #3a86ff;
+  --font-display: "Montserrat", sans-serif;
+  --font-hand: "Gloria Hallelujah", cursive;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+a { color: var(--muted); text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+
+/* Hand-drawn wobbly outlines */
+.wobble-a { border-radius: 160px 8px 140px 8px / 8px 140px 8px 160px; }
+.wobble-c { border-radius: 140px 8px 160px 8px / 8px 160px 8px 140px; }
+
+.hatch {
+  background: repeating-linear-gradient(45deg, #e4e1db 0 4px, var(--paper) 4px 8px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  font-size: 18px;
+  background: transparent;
+  border: 3.5px solid #1e2430;
+  color: #1e2430;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+/* White flash overlay (used by login + booth) */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+.flash.flash-in { animation: flash-in 0.45s ease-in 0.2s forwards; }
+.flash.flash-out { opacity: 1; animation: flash-out 0.7s ease-out forwards; }
+
+@keyframes flash-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes flash-out { from { opacity: 1; } to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .flash.flash-in, .flash.flash-out { animation: none; }
+  .flash.flash-out { opacity: 0; }
+}
