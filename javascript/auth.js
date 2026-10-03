@@ -10,11 +10,7 @@ const shutter = document.getElementById("shutter");
 const googleLogin = document.getElementById("googleLogin");
 const loginError = document.getElementById("loginError");
 
-
-// Camera shutter sound
-const shutterSound = new Audio(
-    "sounds/login-shutter.mp3"
-);
+const shutterSound = new Audio("sounds/login-shutter.mp3");
 
 
 // -------------------------------
@@ -25,26 +21,23 @@ form.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    // Prevent multiple login attempts
     if (shutter.disabled) return;
 
     shutter.disabled = true;
 
-
-    // Get email and password
+    // Get login details
     const email =
         document.getElementById("email").value.trim();
 
     const password =
         document.getElementById("password").value;
 
-
     // Clear previous errors
     loginError.textContent = "";
 
 
     // -------------------------------
-    // LOGIN WITH SUPABASE
+    // SUPABASE EMAIL LOGIN
     // -------------------------------
 
     const { data, error } =
@@ -67,7 +60,6 @@ form.addEventListener("submit", async (event) => {
 
         loginError.textContent = error.message;
 
-        // Allow another attempt
         shutter.disabled = false;
 
         return;
@@ -89,7 +81,7 @@ form.addEventListener("submit", async (event) => {
 
     shutterSound.play().catch((error) => {
         console.log(
-            "Shutter sound could not play:",
+            "Could not play shutter sound:",
             error
         );
     });
@@ -99,9 +91,14 @@ form.addEventListener("submit", async (event) => {
     camera.classList.add("shooting");
     flash.classList.add("flash-in");
 
-  setTimeout(() => {
-    window.location.href = "enter.html";
-  }, 700);
+
+    // Continue to enter page
+    setTimeout(() => {
+
+        window.location.href = "enter.html";
+
+    }, 700);
+
 });
 
 
@@ -111,26 +108,23 @@ form.addEventListener("submit", async (event) => {
 
 googleLogin.addEventListener("click", async () => {
 
-    // Prevent multiple clicks
     if (googleLogin.disabled) return;
 
     googleLogin.disabled = true;
 
-    // Clear previous errors
     loginError.textContent = "";
 
 
-    // URL Google should return to
+    // IMPORTANT:
+    // Google should return to enter.html,
+    // NOT directly to booth.html.
+
     const redirectURL =
         new URL(
-            "booth.html",
+            "enter.html",
             window.location.href
         ).href;
 
-
-    // -------------------------------
-    // LOGIN WITH GOOGLE
-    // -------------------------------
 
     const { error } =
         await supabaseClient.auth.signInWithOAuth({

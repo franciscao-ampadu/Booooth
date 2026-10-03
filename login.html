@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Booooth · Login</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link
         href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Montserrat:wght@400;500&display=swap"
         rel="stylesheet"
@@ -19,7 +16,6 @@
     <link rel="stylesheet" href="styles/auth.css">
 </head>
 
-
 <body>
 
 <main class="login-page">
@@ -28,10 +24,7 @@
 
         <!-- shutter button on TOP of the camera -->
         <div class="shutter-wrap">
-
-            <span class="shutter-label">
-                press to log in
-            </span>
+            <span class="shutter-label">press to log in</span>
 
             <button
                 type="submit"
@@ -40,30 +33,19 @@
                 class="shutter"
                 aria-label="Take the photo and log in">
             </button>
-
         </div>
-
 
         <!-- mode dial on top -->
-        <div
-            class="mode-dial"
-            aria-hidden="true">
-        </div>
-
+        <div class="mode-dial" aria-hidden="true"></div>
 
         <div class="camera-body wobble-a">
 
             <!-- top strip of the back -->
             <div class="camera-top">
 
-                <div
-                    class="eyepiece"
-                    aria-hidden="true">
-                </div>
+                <div class="eyepiece" aria-hidden="true"></div>
 
-                <h1 class="camera-title">
-                    BOOOOTH
-                </h1>
+                <h1 class="camera-title">BOOOOTH</h1>
 
                 <div
                     class="camera-flash-window hatch"
@@ -72,22 +54,16 @@
 
             </div>
 
-
-            <!-- back of the camera -->
+            <!-- back of camera -->
             <div class="camera-back">
 
-
-                <!-- LOGIN SCREEN -->
                 <div class="lcd wobble-c">
 
-                    <form
-                        id="loginForm"
-                        class="login-form">
+                    <form id="loginForm" class="login-form">
 
                         <div class="tagline">
                             say cheese!
                         </div>
-
 
                         <!-- EMAIL -->
                         <label>
@@ -102,7 +78,6 @@
                             >
                         </label>
 
-
                         <!-- PASSWORD -->
                         <label>
                             password
@@ -116,10 +91,8 @@
                             >
                         </label>
 
-
-                        <!-- LOGIN ERROR -->
+                        <!-- ERROR MESSAGE -->
                         <p id="loginError"></p>
-
 
                         <!-- GOOGLE LOGIN -->
                         <div class="google-login-wrap">
@@ -132,7 +105,7 @@
                                 type="button"
                                 id="googleLogin"
                                 class="google-login">
-                                Sign in with Google
+                                sign in with Google
                             </button>
 
                         </div>
@@ -141,11 +114,8 @@
 
                 </div>
 
-
-                <!-- CAMERA CONTROLS -->
-                <div
-                    class="controls"
-                    aria-hidden="true">
+                <!-- camera controls -->
+                <div class="controls" aria-hidden="true">
 
                     <div class="dpad">
                         <div class="dpad-center"></div>
@@ -177,16 +147,14 @@
 </div>
 
 
-<!-- SUPABASE LIBRARY -->
+<!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- SHARED SUPABASE CONNECTION -->
+<!-- SHARED SUPABASE CLIENT -->
 <script src="javascript/supabase.js"></script>
 
 <!-- LOGIN LOGIC -->
 <script src="javascript/auth.js"></script>
 
-
 </body>
-
 </html>
