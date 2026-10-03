@@ -19,6 +19,14 @@
   --font-display: var(--font-montserrat), sans-serif;
   --font-hand: var(--font-gloria), cursive;
   --font-mono: var(--font-jetbrains-mono), monospace;
+
+  /* App (map, booth, friends…) design system. Fonts are loaded per route. */
+  --color-cream: #faf7f2;
+  --color-ink-warm: #1f1b16;
+  --color-muted-warm: #6f675f;
+  --color-line: #ddd5ca;
+  --font-heading: var(--font-bricolage), system-ui, sans-serif;
+  --font-ui: var(--font-inter), system-ui, sans-serif;
 }
 
 html,
@@ -33,13 +41,16 @@ html {
   scroll-behavior: smooth;
 }
 
-a {
-  color: var(--muted);
-  text-underline-offset: 3px;
-}
+/* In the base layer so Tailwind text-* utilities on links still win. */
+@layer base {
+  a {
+    color: var(--muted);
+    text-underline-offset: 3px;
+  }
 
-a:hover {
-  color: var(--ink);
+  a:hover {
+    color: var(--ink);
+  }
 }
 
 /* Hand-drawn, wobbly outlines. The "a" and "b" variants mirror each other so
@@ -107,4 +118,111 @@ a:hover {
 }
 .map-pin:hover {
   transform: translateY(-3px);
+}
+
+/* ---------------------------------------------------------------------------
+   /map — Leaflet markers (rendered as L.divIcon HTML)
+   --------------------------------------------------------------------------- */
+
+.leaflet-container {
+  font-family: inherit;
+  background: #faf7f2;
+}
+
+/* divIcon wrapper: drop Leaflet's default white box. */
+.bm-marker {
+  background: none;
+  border: 0;
+}
+
+.bm-pin {
+  width: 52px;
+  height: 52px;
+  border-radius: 9999px;
+  border: 4px solid var(--friend);
+  background: #ddd5ca;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(31, 27, 22, 0.28);
+  transition: transform 0.15s ease;
+}
+.bm-pin--mine {
+  border-color: var(--accent);
+}
+/* Extra specificity to beat Leaflet's `.leaflet-container .leaflet-marker-pane img { width: auto }`. */
+.leaflet-container .leaflet-marker-pane .bm-pin img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.bm-marker:hover .bm-pin,
+.bm-marker:focus-visible .bm-pin,
+.bm-pin--active {
+  transform: scale(1.12);
+}
+.bm-marker:focus-visible {
+  outline: none;
+}
+.bm-marker:focus-visible .bm-pin {
+  box-shadow:
+    0 0 0 3px #faf7f2,
+    0 0 0 6px #1f1b16;
+}
+
+/* New pin from ?new=<id>: drop onto the map with a bounce. */
+.bm-pin--new {
+  animation: bm-drop 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes bm-drop {
+  0% {
+    transform: translateY(-120px) scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1.12);
+  }
+}
+
+/* "You are here" dot with a soft pulsing halo. */
+.bm-you {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.bm-you::before,
+.bm-you::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+}
+.bm-you::before {
+  background: rgba(58, 134, 255, 0.35);
+  animation: bm-pulse 2s ease-out infinite;
+}
+.bm-you::after {
+  background: #3a86ff;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 4px rgba(31, 27, 22, 0.35);
+}
+@keyframes bm-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bm-you::before,
+  .bm-pin--new {
+    animation: none;
+  }
 }

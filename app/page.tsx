@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import MapDemo from "@/components/landing/MapDemo";
 
@@ -417,14 +418,13 @@ function GetStarted() {
       <h2 className="m-0 font-display text-[clamp(34px,6vw,64px)] font-normal tracking-[.03em]">
         Your seat&apos;s free.
       </h2>
-      {/* TODO: wire to Supabase Auth (signInWithOAuth / magic link) */}
       <div className="flex flex-wrap justify-center gap-4">
-        <a href="#" className="btn-booth px-[30px] py-4 text-[22px]">
+        <Link href="/login" className="btn-booth px-[30px] py-4 text-[22px]">
           continue with Google
-        </a>
-        <a href="#" className="btn-outline px-[30px] py-4 text-[22px]">
+        </Link>
+        <Link href="/login" className="btn-outline px-[30px] py-4 text-[22px]">
           email me a link →
-        </a>
+        </Link>
       </div>
       <div className="font-hand text-[17px]" style={{ transform: "rotate(-1.5deg)" }}>
         works best on your phone ↓
