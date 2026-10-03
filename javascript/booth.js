@@ -111,4 +111,25 @@ async function runBooth() {
   await drawStrip(true);
 }
 
+/* ---------- Filters (pixel maths) ---------- */
+function applyFilter(ctx, x, y, w, h, name) {
+  if (name === "none") return;
+  const img = ctx.getImageData(x, y, w, h);
+  const d = img.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i], g = d[i + 1], b = d[i + 2];
+    if (name === "bw") {
+      const v = 0.299 * r + 0.587 * g + 0.114 * b;
+      d[i] = d[i + 1] = d[i + 2] = Math.min(255, Math.max(0, (v - 128) * 1.15 + 128));
+    } else if (name === "vintage") {
+      const nr = r * 0.393 + g * 0.769 + b * 0.189;
+      const ng = r * 0.349 + g * 0.686 + b * 0.168;
+      const nb = r * 0.272 + g * 0.534 + b * 0.131;
+      d[i]     = Math.min(255, nr * 0.85 + 30);
+      d[i + 1] = Math.min(255, ng * 0.85 + 25);
+      d[i + 2] = Math.min(255, nb * 0.85 + 20);
+    }
+  }
+  ctx.putImageData(img, x, y);
+}
 
