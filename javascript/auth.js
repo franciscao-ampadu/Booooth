@@ -18,7 +18,7 @@ form.addEventListener("submit", (event) => {
   flash.classList.add("flash-in");
 
   setTimeout(() => {
-    window.location.href = "booth.html";
+    window.location.href = "enter.html";
   }, 700);
 });
 
