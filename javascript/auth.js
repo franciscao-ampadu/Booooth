@@ -7,65 +7,152 @@ const camera = document.getElementById("camera");
 const flash = document.getElementById("flash");
 const shutter = document.getElementById("shutter");
 const loginError = document.getElementById("loginError");
+const googleLogin = document.getElementById("googleLogin");
 
 
 // -------------------------------
-// LOGIN
+// EMAIL + PASSWORD LOGIN
 // -------------------------------
 
 form.addEventListener("submit", async (event) => {
+
     event.preventDefault();
 
+    // Prevent multiple login attempts
     if (shutter.disabled) return;
+
     shutter.disabled = true;
 
-    // Get email and password from the form
-    const email = document.getElementById("email").value;
+    // Get email and password
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
     // Clear previous error
     loginError.textContent = "";
 
-    // Try logging into Supabase
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
 
-    // ❌ LOGIN FAILED
+    // -------------------------------
+    // LOGIN WITH SUPABASE
+    // -------------------------------
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+
+    // -------------------------------
+    // LOGIN FAILED
+    // -------------------------------
+
     if (error) {
-        console.error("Login failed:", error.message);
+
+        console.error(
+            "Login failed:",
+            error.message
+        );
 
         loginError.textContent = error.message;
 
-        // Allow user to try again
+        // Allow another attempt
         shutter.disabled = false;
 
         return;
     }
 
-    // ✅ LOGIN SUCCESSFUL
-    console.log("Logged in:", data.user);
 
-    // Play your original camera animation
+    // -------------------------------
+    // LOGIN SUCCESSFUL
+    // -------------------------------
+
+    console.log(
+        "Logged in:",
+        data.user
+    );
+
+
+    // Play camera animation
     camera.classList.add("shooting");
     flash.classList.add("flash-in");
 
-    // Go to booth after animation
+
+    // Redirect after camera animation
     setTimeout(() => {
+
         window.location.href = "booth.html";
+
     }, 700);
+
 });
 
 
 // -------------------------------
-// RESET CAMERA
+// GOOGLE LOGIN
 // -------------------------------
 
-// If the user comes back with the browser's back button,
-// reset the animation.
+googleLogin.addEventListener("click", async () => {
+
+    // Prevent multiple clicks
+    googleLogin.disabled = true;
+
+    // Clear previous error
+    loginError.textContent = "";
+
+
+    // Create the URL Google should return to
+    const redirectURL =
+        new URL("booth.html", window.location.href).href;
+
+
+    // -------------------------------
+    // LOGIN WITH GOOGLE
+    // -------------------------------
+
+    const { error } =
+        await supabaseClient.auth.signInWithOAuth({
+
+            provider: "google",
+
+            options: {
+                redirectTo: redirectURL
+            }
+
+        });
+
+
+    // -------------------------------
+    // GOOGLE LOGIN FAILED
+    // -------------------------------
+
+    if (error) {
+
+        console.error(
+            "Google login failed:",
+            error.message
+        );
+
+        loginError.textContent = error.message;
+
+        googleLogin.disabled = false;
+    }
+
+});
+
+
+// -------------------------------
+// RESET LOGIN PAGE
+// -------------------------------
+
+// If the user returns using the browser
+// back button, reset the camera and buttons.
+
 window.addEventListener("pageshow", () => {
+
     shutter.disabled = false;
+    googleLogin.disabled = false;
+
     camera.classList.remove("shooting");
     flash.classList.remove("flash-in");
+
 });

@@ -133,3 +133,26 @@
 @media (prefers-reduced-motion: reduce) {
   .camera.shooting { animation: none; }
 }
+
+.google-login-wrap {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.login-divider {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.google-login {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+}
+
+.google-login:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
