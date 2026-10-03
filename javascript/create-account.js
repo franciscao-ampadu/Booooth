@@ -28,7 +28,9 @@ form.addEventListener("submit", async (event) => {
 
         options: {
             data: {
-                username: username
+                username: username,
+                full_name: username,
+                display_name: username
             }
         }
     });
