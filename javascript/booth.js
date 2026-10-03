@@ -40,3 +40,21 @@ async function startCamera() {
   }
 }
 
+/* ---------- Sounds (generated, no files needed) ---------- */
+function tone(freq, dur, type = "sine", endFreq = freq) {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, t);
+  osc.frequency.exponentialRampToValueAtTime(endFreq, t + dur);
+  gain.gain.setValueAtTime(0.25, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(t);
+  osc.stop(t + dur);
+}
+const beep = () => tone(880, 0.12);
+const shutterClick = () => tone(900, 0.12, "square", 120); // swap for an mp3 if you like
+
