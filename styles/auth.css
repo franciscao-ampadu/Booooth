@@ -226,3 +226,168 @@
   .camera.shooting { animation: none; }
   .shutter { transition: none; }
 }
+
+/* =========================================
+   GOOGLE LOGIN
+   ========================================= */
+
+.google-login-wrap {
+    width: 100%;
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+/* little "or" text */
+.login-divider {
+    font-family: "Gloria Hallelujah", cursive;
+    font-size: 12px;
+
+    color: #555;
+
+    position: relative;
+
+    width: 80%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+
+/* hand-drawn lines beside "or" */
+.login-divider::before,
+.login-divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1.5px;
+
+    background: #555;
+
+    border-radius: 100%;
+
+    transform: rotate(-1deg);
+}
+
+.login-divider::after {
+    transform: rotate(1deg);
+}
+
+
+/* GOOGLE BUTTON */
+.google-login {
+    position: relative;
+
+    border: 2px solid #222;
+
+    background: #fff;
+
+    color: #222;
+
+    padding: 7px 14px;
+
+    border-radius: 12px;
+
+    font-family: "Gloria Hallelujah", cursive;
+    font-size: 12px;
+
+    cursor: pointer;
+
+    box-shadow:
+        3px 3px 0 #222;
+
+    transform: rotate(-1deg);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+
+/* tiny Google G */
+.google-login::before {
+    content: "G";
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 19px;
+    height: 19px;
+
+    margin-right: 7px;
+
+    border: 1.5px solid #222;
+    border-radius: 50%;
+
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+
+    background: #fafafa;
+
+    transform: rotate(2deg);
+}
+
+
+/* HOVER */
+.google-login:hover {
+    background: #fffbea;
+
+    transform:
+        rotate(1deg)
+        translateY(-2px);
+
+    box-shadow:
+        4px 5px 0 #222;
+}
+
+
+/* CLICK */
+.google-login:active {
+    transform:
+        rotate(0deg)
+        translate(2px, 2px);
+
+    box-shadow:
+        1px 1px 0 #222;
+}
+
+
+/* DISABLED WHILE GOOGLE LOGIN LOADS */
+.google-login:disabled {
+    opacity: 0.55;
+
+    cursor: wait;
+
+    transform: rotate(-1deg);
+
+    box-shadow:
+        2px 2px 0 #555;
+}
+
+
+/* LOGIN ERROR */
+#loginError {
+    margin: 4px 0 0;
+
+    min-height: 14px;
+
+    font-family: "Gloria Hallelujah", cursive;
+    font-size: 10px;
+
+    text-align: center;
+
+    color: #9b2525;
+}
