@@ -39,14 +39,37 @@
                     <form id="signupForm" class="login-form signup-form">
                         <div class="tagline">join the booth!</div>
                         <label>username
-                            <input type="text" name="username" autocomplete="username" required>
+                            <input
+                                type="text"
+                                name="username"
+                                id="username"
+                                autocomplete="username"
+                                required
+                            >
                         </label>
+
                         <label>email
-                            <input type="email" name="email" autocomplete="email" required>
+                            <input
+                                type="email"
+                                name="email"
+                                id="signupEmail"
+                                autocomplete="email"
+                                required
+                            >
                         </label>
+
                         <label>password
-                            <input type="password" name="password" autocomplete="new-password">
+                            <input
+                                type="password"
+                                name="password"
+                                id="signupPassword"
+                                autocomplete="new-password"
+                                required
+                                minlength="6"
+                            >
                         </label>
+
+                        <p id="signupError"></p>
                     </form>
                 </div>
 
@@ -66,6 +89,13 @@
 </main>
 
 <div class="flash" id="flash" aria-hidden="true"></div>
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SHARED SUPABASE CLIENT -->
+<script src="javascript/supabase.js"></script>
+
+<!-- CREATE ACCOUNT LOGIC -->
 <script src="javascript/create-account.js"></script>
 </body>
 </html>
