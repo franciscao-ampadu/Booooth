@@ -2,7 +2,8 @@
 // Photobooth: camera (getUserMedia) → 4 shots → vertical strip on a <canvas>.
 
 const FRAME_W = 520, FRAME_H = 390;                 // one photo (4:3)
-const STRIP = { w: 600, margin: 40, gap: 24, bottom: 150 };
+const STRIP = { margin: 60, gap: 32, bottom: 170 };
+STRIP.w = FRAME_W + 2 * STRIP.margin;
 STRIP.h = STRIP.margin + 4 * FRAME_H + 3 * STRIP.gap + STRIP.bottom;
 
 const FRAMES = {
@@ -14,11 +15,43 @@ const FRAMES = {
 
 const THEMES = [
   { id: "classic", name: "Classic" },
-  { id: "hearts",    name: "Hearts",    bg: "#ffd0dc", text: "#b0124f", emoji: ["💗", "❤️", "💕", "💘"] },
-  { id: "autumn",    name: "Autumn",    bg: "#f3c98b", text: "#7a3b12", emoji: ["🍂", "🍁", "🍄", "🌰"] },
-  { id: "football",  name: "Football",  bg: "#2e7d32", text: "#ffffff", emoji: ["⚽", "🥅", "🏆", "🟨"] },
-  { id: "halloween", name: "Halloween", bg: "#1b1326", text: "#ff8a1f", emoji: ["🎃", "👻", "🦇", "🕷️"] },
-  { id: "space",     name: "Space",     bg: "#0c1033", text: "#ffe66d", emoji: ["🚀", "⭐", "🌙", "✨"] },
+
+  { id: "hearts", name: "Hearts", bg: "#ffd0dc", text: "#b0124f",
+    emoji: ["💗", "❤️", "💕", "💘"] },
+
+  { id: "autumn", name: "Autumn", bg: "#f3c98b", text: "#7a3b12",
+    emoji: ["🍂", "🍁", "🍄", "🌰"] },
+
+  { id: "football", name: "Football", title: "MATCHDAY", bg: "#2e7d32", text: "#ffffff",
+    emoji: ["⚽", "🥅", "🏆", "🟨", "🟥", "👟"],
+    paintBg(ctx) {
+      // mown-grass stripes
+      for (let y = 0, i = 0; y < STRIP.h; y += 94, i++) {
+        ctx.fillStyle = i % 2 ? "#2e7d32" : "#3a9440";
+        ctx.fillRect(0, y, STRIP.w, 94);
+      }
+      // white pitch line around the edge
+      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(8, 8, STRIP.w - 16, STRIP.h - 16);
+    } },
+
+  { id: "halloween", name: "Halloween", bg: "#1b1326", text: "#ff8a1f",
+    emoji: ["🎃", "👻", "🦇", "🕷️"] },
+
+  { id: "kanelbulle", name: "Kanelbulle", title: "FIKA TIME", bg: "#f6e6cc", text: "#6b3a1e",
+    emoji: ["BUN", "☕", "🤎"],
+    paintBg(ctx) {
+      // dashed bakery-box border
+      ctx.strokeStyle = "#b07a4a";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([10, 8]);
+      ctx.strokeRect(8, 8, STRIP.w - 16, STRIP.h - 16);
+      ctx.setLineDash([]);
+    } },
+
+  { id: "space", name: "Space", bg: "#0c1033", text: "#ffe66d",
+    emoji: ["🚀", "⭐", "🌙", "✨"] },
 ];
 let themeIndex = 0;
 
@@ -164,6 +197,60 @@ function drawStickers(ctx, emojis) {
 }
 
 /* ---------- Building the strip ---------- */
+// A little cinnamon bun, drawn in code (there's no emoji for it)
+function drawBun(ctx, r) {
+  ctx.fillStyle = "#d9a066";
+  ctx.strokeStyle = "#7a3b12";
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  // spiral
+  ctx.beginPath();
+  for (let a = 0; a < Math.PI * 5; a += 0.2) {
+    const rad = 2 + a * 0.8;
+    const x = Math.cos(a) * rad, y = Math.sin(a) * rad;
+    if (a === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  // pearl sugar
+  ctx.fillStyle = "#fff";
+  [[-9, -10], [10, -7], [-11, 7], [8, 11], [0, -14]].forEach(([dx, dy]) => {
+    ctx.beginPath();
+    ctx.arc(dx, dy, 2, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+// Stickers on all four borders (fixed pattern, so it doesn't flicker)
+function drawStickers(ctx, items) {
+  const m = STRIP.margin;
+  const spots = [];
+  for (let y = m; y <= STRIP.h - STRIP.bottom; y += 66) {
+    spots.push([m / 2, y], [STRIP.w - m / 2, y]);            // left + right
+  }
+  for (let i = 0; i < 5; i++) {
+    const x = m + 52 + i * 104;
+    spots.push([x, m / 2], [x, STRIP.h - STRIP.bottom + 28]); // top + bottom
+  }
+
+  ctx.font = '34px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  spots.forEach(([x, y], n) => {
+    const item = items[(n + Math.floor(n / 2)) % items.length];
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate((((n * 37) % 31) - 15) * Math.PI / 180);
+    if (item === "BUN") drawBun(ctx, 17);
+    else ctx.fillText(item, 0, 0);
+    ctx.restore();
+  });
+  ctx.textBaseline = "alphabetic";
+}
+
 async function drawStrip(animate = false) {
   await document.fonts.load('28px "Gloria Hallelujah"');
   strip.width = STRIP.w;
@@ -171,8 +258,10 @@ async function drawStrip(animate = false) {
   const ctx = strip.getContext("2d");
   const theme = THEMES[themeIndex];
   const f = theme.id === "classic" ? FRAMES[frameName] : theme;
+
   ctx.fillStyle = f.bg;
   ctx.fillRect(0, 0, STRIP.w, STRIP.h);
+  if (theme.paintBg) theme.paintBg(ctx);   // theme-specific background
 
   shots.forEach((shot, i) => {
     const x = STRIP.margin;
@@ -186,13 +275,13 @@ async function drawStrip(animate = false) {
   ctx.fillStyle = f.text;
   ctx.textAlign = "center";
   ctx.font = '40px "Gloria Hallelujah"';
-  ctx.fillText("BOOTHMAP", STRIP.w / 2, STRIP.h - 85);
+  ctx.fillText(theme.title || "BOOTHMAP", STRIP.w / 2, STRIP.h - 85);
   ctx.font = '26px "Gloria Hallelujah"';
   ctx.fillText(
-  theme.id === "classic" ? takenAt : `${theme.name.toUpperCase()} · ${takenAt}`,
-  STRIP.w / 2,
-  STRIP.h - 45
-);
+    theme.id === "classic" ? takenAt : `${theme.name.toUpperCase()} · ${takenAt}`,
+    STRIP.w / 2,
+    STRIP.h - 45
+  );
 
   if (animate) {
     strip.classList.remove("printing");
