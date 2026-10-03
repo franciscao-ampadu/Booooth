@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boothmap · Login</title>
+    <title>Booooth · Login</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,116 +17,54 @@
 </head>
 
 <body>
+<main class="login-page">
+    <div class="camera" id="camera">
 
-    <main class="login-page">
-
-        <div class="camera" id="camera">
-
-            <div class="camera-bump" aria-hidden="true"></div>
-
-            <div class="camera-body wobble-a">
-
-                <div class="camera-top">
-                    <div
-                        class="camera-flash-window hatch"
-                        aria-hidden="true">
-                    </div>
-
-                    <h1 class="camera-title">BOOTHMAP</h1>
-                </div>
-
-
-                <!-- CAMERA LENS / LOGIN FORM -->
-                <div class="lens-outer wobble-c">
-
-                    <div class="lens-inner">
-
-                        <form id="loginForm" class="login-form">
-
-                            <div class="tagline">
-                                say cheese!
-                            </div>
-
-                            <!-- EMAIL -->
-                            <label>
-                                email
-
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    autocomplete="email"
-                                    required
-                                >
-                            </label>
-
-
-                            <!-- PASSWORD -->
-                            <label>
-                                password
-
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    autocomplete="current-password"
-                                    required
-                                >
-                            </label>
-
-
-                            <!-- LOGIN ERROR -->
-                            <p id="loginError"></p>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-
-                <!-- CAMERA SHUTTER LOGIN BUTTON -->
-                <div class="shutter-wrap">
-
-                    <button
-                        type="submit"
-                        form="loginForm"
-                        id="shutter"
-                        class="shutter"
-                        aria-label="Take the photo and log in">
-                    </button>
-
-                    <span>tap to log in</span>
-
-                </div>
-
-
-                <!-- GOOGLE LOGIN -->
-                <div class="google-login-wrap">
-
-                    <span class="login-divider">
-                        or
-                    </span>
-
-                    <button
-                        type="button"
-                        id="googleLogin"
-                        class="google-login">
-                        Continue with Google
-                    </button>
-
-                </div>
-
-            </div>
-
+        <!-- shutter button on TOP of the camera -->
+        <div class="shutter-wrap">
+            <span class="shutter-label">press to log in</span>
+            <button type="submit" form="loginForm" id="shutter" class="shutter"
+                    aria-label="Take the photo and log in"></button>
         </div>
 
+        <!-- mode dial on top -->
+        <div class="mode-dial" aria-hidden="true"></div>
 
-        <a class="back-link" href="index.html">
-            ← back to home
-        </a>
+        <div class="camera-body wobble-a">
+            <!-- top strip of the back -->
+            <div class="camera-top">
+                <div class="eyepiece" aria-hidden="true"></div>
+                <h1 class="camera-title">BOOOOTH</h1>
+                <div class="camera-flash-window hatch" aria-hidden="true"></div>
+            </div>
 
-    </main>
+            <!-- back of the camera: screen + controls -->
+            <div class="camera-back">
+                <div class="lcd wobble-c">
+                    <form id="loginForm" class="login-form">
+                        <div class="tagline">say cheese!</div>
+                        <label>username
+                            <input type="text" name="username" autocomplete="username">
+                        </label>
+                        <label>password
+                            <input type="password" name="password" autocomplete="current-password">
+                        </label>
+                    </form>
+                </div>
+
+                <div class="controls" aria-hidden="true">
+                    <div class="dpad"><div class="dpad-center"></div></div>
+                    <div class="small-buttons">
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="thumb-grip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
 
 
     <!-- CAMERA FLASH -->

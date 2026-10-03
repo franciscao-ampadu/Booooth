@@ -6,75 +6,19 @@ const form = document.getElementById("loginForm");
 const camera = document.getElementById("camera");
 const flash = document.getElementById("flash");
 const shutter = document.getElementById("shutter");
-const loginError = document.getElementById("loginError");
-const googleLogin = document.getElementById("googleLogin");
+const shuttersound = new Audio("sounds/login-shutter.mp3");
 
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (shutter.disabled) return;
+  shutter.disabled = true;
 
-// -------------------------------
-// EMAIL + PASSWORD LOGIN
-// -------------------------------
-
-form.addEventListener("submit", async (event) => {
-
-    event.preventDefault();
-
-    // Prevent multiple login attempts
-    if (shutter.disabled) return;
-
-    shutter.disabled = true;
-
-    // Get email and password
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-
-    // Clear previous error
-    loginError.textContent = "";
-
-
-    // -------------------------------
-    // LOGIN WITH SUPABASE
-    // -------------------------------
-
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-
-    // -------------------------------
-    // LOGIN FAILED
-    // -------------------------------
-
-    if (error) {
-
-        console.error(
-            "Login failed:",
-            error.message
-        );
-
-        loginError.textContent = error.message;
-
-        // Allow another attempt
-        shutter.disabled = false;
-
-        return;
-    }
-
-
-    // -------------------------------
-    // LOGIN SUCCESSFUL
-    // -------------------------------
-
-    console.log(
-        "Logged in:",
-        data.user
-    );
-
-
-    // Play camera animation
-    camera.classList.add("shooting");
-    flash.classList.add("flash-in");
+  shuttersound.currentTime = 0;
+  shuttersound.play(); 
+  
+  // TODO: replace with Supabase Auth, and only redirect on success.
+  camera.classList.add("shooting");
+  flash.classList.add("flash-in");
 
 
     // Redirect after camera animation
