@@ -1,35 +1,70 @@
-// Create account: pressing the shutter flashes the screen, then goes to the booth.
+// Create account: create the user with Supabase,
+// then play the shutter animation and enter the booth.
+
 const form = document.getElementById("signupForm");
 const camera = document.getElementById("camera");
 const flash = document.getElementById("flash");
 const shutter = document.getElementById("shutter");
 const shuttersound = new Audio("sounds/login-shutter.mp3");
 
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (shutter.disabled) return;
-  shutter.disabled = true;
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-  shuttersound.currentTime = 0;
-  shuttersound.play();
+    // Stop user from clicking twice
+    if (shutter.disabled) return;
+    shutter.disabled = true;
 
-  // TODO: replace with Supabase Auth signUp, and only redirect on success.
-  const data = new FormData(form);
-  const username = data.get("username");
-  const email = data.get("email");
-  const password = data.get("password");
+    // Get the values from the form
+    const formData = new FormData(form);
 
-  camera.classList.add("shooting");
-  flash.classList.add("flash-in");
+    const username = formData.get("username").trim();
+    const email = formData.get("email").trim();
+    const password = formData.get("password");
 
-  setTimeout(() => {
-    window.location.href = "booth.html";
-  }, 700);
+    // Create account with Supabase
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+
+        options: {
+            data: {
+                username: username
+            }
+        }
+    });
+
+    // If account creation failed
+    if (error) {
+        console.error("Signup error:", error);
+
+        alert(error.message);
+
+        // Let the user try again
+        shutter.disabled = false;
+        return;
+    }
+
+    // Account was created successfully
+    console.log("Account created:", data);
+
+    // Play shutter sound
+    shuttersound.currentTime = 0;
+    shuttersound.play();
+
+    // Camera animation
+    camera.classList.add("shooting");
+    flash.classList.add("flash-in");
+
+    // Go to booth
+    setTimeout(() => {
+        window.location.href = "booth.html";
+    }, 700);
 });
 
-// Reset the animation if the user comes back with the browser's back button.
+
+// Reset animation if user comes back using browser back button
 window.addEventListener("pageshow", () => {
-  shutter.disabled = false;
-  camera.classList.remove("shooting");
-  flash.classList.remove("flash-in");
+    shutter.disabled = false;
+    camera.classList.remove("shooting");
+    flash.classList.remove("flash-in");
 });
