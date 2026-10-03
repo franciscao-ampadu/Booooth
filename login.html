@@ -26,12 +26,19 @@
                     <div class="lens-inner">
                         <form id="loginForm" class="login-form">
                             <div class="tagline">say cheese!</div>
-                            <label>username
-                                <input type="text" name="username" autocomplete="username">
+                            <label>email
+                                <input
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    autocomplete="email"
+                                    required
+                                >
                             </label>
                             <label>password
                                 <input type="password" name="password" autocomplete="current-password">
                             </label>
+                            <p id="loginError"></p>
                         </form>
                     </div>
                 </div>
