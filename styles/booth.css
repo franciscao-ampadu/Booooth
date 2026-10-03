@@ -1,0 +1,23 @@
+.booth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px 20px;
+  text-align: center;
+}
+.booth-page h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 6vw, 64px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+.booth-page p {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  color: var(--body);
+}

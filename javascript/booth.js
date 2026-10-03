@@ -1,0 +1,1 @@
+// Booth logic goes here: camera, countdown, 4 shots, strip.
