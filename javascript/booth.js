@@ -133,3 +133,78 @@ function applyFilter(ctx, x, y, w, h, name) {
   ctx.putImageData(img, x, y);
 }
 
+/* ---------- Building the strip ---------- */
+async function drawStrip(animate = false) {
+  await document.fonts.load('28px "Gloria Hallelujah"');
+  strip.width = STRIP.w;
+  strip.height = STRIP.h;
+  const ctx = strip.getContext("2d");
+  const f = FRAMES[frameName];
+
+  ctx.fillStyle = f.bg;
+  ctx.fillRect(0, 0, STRIP.w, STRIP.h);
+
+  shots.forEach((shot, i) => {
+    const x = STRIP.margin;
+    const y = STRIP.margin + i * (FRAME_H + STRIP.gap);
+    ctx.drawImage(shot, x, y);
+    applyFilter(ctx, x, y, FRAME_W, FRAME_H, filter);
+  });
+
+  ctx.fillStyle = f.text;
+  ctx.textAlign = "center";
+  ctx.font = '40px "Gloria Hallelujah"';
+  ctx.fillText("BOOTHMAP", STRIP.w / 2, STRIP.h - 85);
+  ctx.font = '26px "Gloria Hallelujah"';
+  ctx.fillText(takenAt, STRIP.w / 2, STRIP.h - 45);
+
+  if (animate) {
+    strip.classList.remove("printing");
+    void strip.offsetWidth;
+    strip.classList.add("printing");
+  }
+}
+
+/* ---------- Buttons ---------- */
+startBtn.addEventListener("click", () => {
+  // Audio may only start after a click
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  audioCtx.resume();
+  runBooth();
+});
+
+function chipGroup(id, attr, onPick) {
+  $(id).addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    $(id).querySelectorAll("button").forEach((b) => b.classList.toggle("active", b === btn));
+    onPick(btn.dataset[attr]);
+    drawStrip();
+  });
+}
+chipGroup("filterChips", "filter", (v) => (filter = v));
+chipGroup("frameChips", "frame", (v) => (frameName = v));
+
+$("retakeBtn").addEventListener("click", () => {
+  review.hidden = true;
+  stage.hidden = false;
+  startBtn.disabled = false;
+  thumbs.forEach((t) => (t.style.backgroundImage = ""));
+});
+
+$("downloadBtn").addEventListener("click", () => {
+  strip.toBlob((blob) => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "boothmap-strip.jpg";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }, "image/jpeg", 0.85);
+});
+
+$("postBtn").addEventListener("click", () => {
+  // TODO: upload strip.toBlob(...) to Supabase Storage, save lat/lng, go to map.html
+  alert("Posting to the map comes next!");
+});
+
+startCamera();
