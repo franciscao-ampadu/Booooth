@@ -98,16 +98,44 @@
 .btn-booth:disabled { opacity: 0.5; cursor: default; }
 
 /* Strip "printing" downwards like a real booth */
-.strip-wrap { display: flex; justify-content: center; }
+.strip-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 #strip {
   display: block;
   width: auto;
   height: auto;
-  max-width: 100%;
+  max-width: calc(100% - 112px);
   max-height: 68vh;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
   transform: rotate(-2deg);
 }
+
+.arrow {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.arrow:hover { background: var(--accent); color: #fff; }
+
+.theme-name {
+  margin: -6px 0 0;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  text-align: center;
+}
+
 #strip.printing { animation: print 2.2s linear both; }
 @keyframes print {
   from { clip-path: inset(0 0 100% 0); }

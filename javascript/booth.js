@@ -12,6 +12,16 @@ const FRAMES = {
   ink:   { bg: "#141414", text: "#ffffff" },
 };
 
+const THEMES = [
+  { id: "classic", name: "Classic" },
+  { id: "hearts",    name: "Hearts",    bg: "#ffd0dc", text: "#b0124f", emoji: ["💗", "❤️", "💕", "💘"] },
+  { id: "autumn",    name: "Autumn",    bg: "#f3c98b", text: "#7a3b12", emoji: ["🍂", "🍁", "🍄", "🌰"] },
+  { id: "football",  name: "Football",  bg: "#2e7d32", text: "#ffffff", emoji: ["⚽", "🥅", "🏆", "🟨"] },
+  { id: "halloween", name: "Halloween", bg: "#1b1326", text: "#ff8a1f", emoji: ["🎃", "👻", "🦇", "🕷️"] },
+  { id: "space",     name: "Space",     bg: "#0c1033", text: "#ffe66d", emoji: ["🚀", "⭐", "🌙", "✨"] },
+];
+let themeIndex = 0;
+
 const $ = (id) => document.getElementById(id);
 const video = $("video"), countdownEl = $("countdown"), cameraMsg = $("cameraMsg");
 const startBtn = $("startBtn"), shotFlash = $("shotFlash");
@@ -131,6 +141,26 @@ function applyFilter(ctx, x, y, w, h, name) {
     }
   }
   ctx.putImageData(img, x, y);
+}
+
+// Emoji stickers down both side borders (fixed pattern, so it doesn't flicker)
+function drawStickers(ctx, emojis) {
+  ctx.font = '28px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const xs = [STRIP.margin / 2, STRIP.w - STRIP.margin / 2];
+  let n = 0;
+  for (let y = 50; y < STRIP.h - STRIP.bottom; y += 62) {
+    xs.forEach((x, side) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate((((n * 37 + side * 17) % 31) - 15) * Math.PI / 180);
+      ctx.fillText(emojis[(n + side) % emojis.length], 0, 0);
+      ctx.restore();
+    });
+    n++;
+  }
+  ctx.textBaseline = "alphabetic";
 }
 
 /* ---------- Building the strip ---------- */
