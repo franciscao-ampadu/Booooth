@@ -56,5 +56,5 @@ function tone(freq, dur, type = "sine", endFreq = freq) {
   osc.stop(t + dur);
 }
 const beep = () => tone(880, 0.12);
-const shutterClick = () => tone(900, 0.12, "square", 120); // swap for an mp3 if you like
+const shutterClick = () => tone(900, 0.12, "square", 120);
 
