@@ -64,3 +64,23 @@ a:hover { color: var(--ink); }
   .flash.flash-in, .flash.flash-out { animation: none; }
   .flash.flash-out { opacity: 0; }
 }
+
+/* Big booth button (used on home + booth pages) */
+.btn-booth {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  font-size: 24px;
+  background: #eef0f3;
+  border: 3.5px solid #1e2430;
+  color: #1e2430;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-booth:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--ink);
+}

@@ -99,14 +99,9 @@ form.addEventListener("submit", async (event) => {
     camera.classList.add("shooting");
     flash.classList.add("flash-in");
 
-
-    // Redirect after animation
-    setTimeout(() => {
-
-        window.location.href = "booth.html";
-
-    }, 700);
-
+  setTimeout(() => {
+    window.location.href = "enter.html";
+  }, 700);
 });
 
 
