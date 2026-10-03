@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Avatar from "@/components/Avatar";
 import type { MapPhoto } from "@/lib/photos";
 import { timeAgo } from "@/lib/timeAgo";
 
@@ -39,7 +40,11 @@ export default function PhotoSheet({
       {shown && (
         <>
           <div className="flex items-center gap-3">
-            <Avatar photo={shown} />
+            <Avatar
+              url={shown.avatarUrl}
+              name={shown.username}
+              ring={shown.isMine ? "me" : "friend"}
+            />
             <div className="min-w-0 flex-1">
               <h2
                 id="photo-sheet-title"
@@ -93,24 +98,3 @@ export default function PhotoSheet({
   );
 }
 
-function Avatar({ photo }: { photo: MapPhoto }) {
-  const ring = photo.isMine ? "border-accent" : "border-friend";
-  if (photo.avatarUrl) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={photo.avatarUrl}
-        alt=""
-        className={`h-11 w-11 shrink-0 rounded-full border-[3px] object-cover ${ring}`}
-      />
-    );
-  }
-  return (
-    <span
-      aria-hidden
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[3px] bg-cream font-heading text-base font-semibold text-ink-warm uppercase ${ring}`}
-    >
-      {photo.username.charAt(0)}
-    </span>
-  );
-}

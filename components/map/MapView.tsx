@@ -12,10 +12,10 @@ import {
   type DemoReason,
   type MapPhoto,
 } from "@/lib/photos";
+import { getPosition, LINDHOLMEN, locationErrorMessage } from "@/lib/geo";
 import FilterChips, { type PhotoFilter } from "./FilterChips";
 import PhotoSheet from "./PhotoSheet";
 
-const LINDHOLMEN: [number, number] = [57.7065, 11.9384];
 const DEFAULT_ZOOM = 14;
 const USER_ZOOM = 15;
 const PHOTO_ZOOM = 16;
@@ -68,7 +68,7 @@ export default function MapView() {
   const [filter, setFilter] = useState<PhotoFilter>("all");
   const [selected, setSelected] = useState<MapPhoto | null>(null);
   const [userPos, setUserPos] = useState<[number, number] | null>(null);
-  const [locationOff, setLocationOff] = useState(() => !("geolocation" in navigator));
+  const [locationOff, setLocationOff] = useState(false);
   // ?new=<photoId> after posting a strip: fly to it and open its sheet.
   const [newPhotoId] = useState(() => new URLSearchParams(window.location.search).get("new"));
 
@@ -112,20 +112,24 @@ export default function MapView() {
 
   // Centre on the user (unless we're deep-linking to a photo).
   useEffect(() => {
-    if (!map || !("geolocation" in navigator)) return;
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const here: [number, number] = [pos.coords.latitude, pos.coords.longitude];
-        setUserPos(here);
+    if (!map) return;
+    let cancelled = false;
+    getPosition().then(
+      ({ lat, lng }) => {
+        if (cancelled) return;
+        setUserPos([lat, lng]);
         setLocationOff(false);
-        if (!newPhotoId) map.setView(here, USER_ZOOM);
+        if (!newPhotoId) map.setView([lat, lng], USER_ZOOM);
       },
       (err) => {
-        console.info("[map] location unavailable, using Lindholmen:", err.message);
+        if (cancelled) return;
+        console.info("[map] location unavailable, using Lindholmen:", locationErrorMessage(err), err);
         setLocationOff(true);
       },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 60_000 },
     );
+    return () => {
+      cancelled = true;
+    };
   }, [map, newPhotoId]);
 
   useEffect(() => {
@@ -167,7 +171,7 @@ export default function MapView() {
     <div className="relative h-full w-full">
       <MapContainer
         ref={setMap}
-        center={LINDHOLMEN}
+        center={[LINDHOLMEN.lat, LINDHOLMEN.lng]}
         zoom={DEFAULT_ZOOM}
         zoomControl={false}
         className="h-full w-full"
@@ -204,6 +208,21 @@ export default function MapView() {
           />
         ))}
       </MapContainer>
+
+      <Link
+        href="/home"
+        aria-label="Home"
+        className="absolute top-[calc(0.5rem+env(safe-area-inset-top))] left-3 z-[1001] flex h-11 w-11 items-center justify-center rounded-full bg-cream/90 text-ink-warm shadow-[0_2px_12px_rgba(31,27,22,0.15)] backdrop-blur hover:bg-cream"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path
+            d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Link>
 
       {/* Floating top bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[1000] flex flex-col items-center gap-1.5 px-3 pt-[calc(0.5rem+env(safe-area-inset-top))]">
