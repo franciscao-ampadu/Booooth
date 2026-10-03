@@ -11,3 +11,32 @@ const FRAMES = {
   blue:  { bg: "#3a86ff", text: "#ffffff" },
   ink:   { bg: "#141414", text: "#ffffff" },
 };
+
+const $ = (id) => document.getElementById(id);
+const video = $("video"), countdownEl = $("countdown"), cameraMsg = $("cameraMsg");
+const startBtn = $("startBtn"), shotFlash = $("shotFlash");
+const stage = $("stage"), review = $("review"), strip = $("strip");
+const thumbs = [...document.querySelectorAll(".thumbs li")];
+
+let shots = [], takenAt = "", filter = "none", frameName = "white", audioCtx = null;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/* ---------- Camera ---------- */
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } },
+      audio: false,
+    });
+    video.srcObject = stream;
+    await video.play();
+    cameraMsg.hidden = true;
+    startBtn.disabled = false;
+  } catch (err) {
+    console.error(err);
+    cameraMsg.textContent =
+      "Couldn't open the camera. Allow access in your browser, and make sure the page is on localhost or https.";
+  }
+}
+
