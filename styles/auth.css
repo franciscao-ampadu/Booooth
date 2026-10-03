@@ -197,8 +197,6 @@
   opacity: 0.3;
 }
 
-.back-link { font-family: var(--font-hand); font-size: 18px; }
-
 /* ---------- Small screens: stack controls under the screen ---------- */
 @media (max-width: 560px) {
   .camera-back { flex-direction: column; }
