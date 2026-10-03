@@ -169,8 +169,8 @@ async function drawStrip(animate = false) {
   strip.width = STRIP.w;
   strip.height = STRIP.h;
   const ctx = strip.getContext("2d");
-  const f = FRAMES[frameName];
-
+  const theme = THEMES[themeIndex];
+  const f = theme.id === "classic" ? FRAMES[frameName] : theme;
   ctx.fillStyle = f.bg;
   ctx.fillRect(0, 0, STRIP.w, STRIP.h);
 
@@ -181,12 +181,18 @@ async function drawStrip(animate = false) {
     applyFilter(ctx, x, y, FRAME_W, FRAME_H, filter);
   });
 
+  if (theme.emoji) drawStickers(ctx, theme.emoji);
+
   ctx.fillStyle = f.text;
   ctx.textAlign = "center";
   ctx.font = '40px "Gloria Hallelujah"';
   ctx.fillText("BOOTHMAP", STRIP.w / 2, STRIP.h - 85);
   ctx.font = '26px "Gloria Hallelujah"';
-  ctx.fillText(takenAt, STRIP.w / 2, STRIP.h - 45);
+  ctx.fillText(
+  theme.id === "classic" ? takenAt : `${theme.name.toUpperCase()} · ${takenAt}`,
+  STRIP.w / 2,
+  STRIP.h - 45
+);
 
   if (animate) {
     strip.classList.remove("printing");
@@ -235,6 +241,22 @@ $("downloadBtn").addEventListener("click", () => {
 $("postBtn").addEventListener("click", () => {
   // TODO: upload strip.toBlob(...) to Supabase Storage, save lat/lng, go to map.html
   alert("Posting to the map comes next!");
+});
+
+function setTheme(delta) {
+  themeIndex = (themeIndex + delta + THEMES.length) % THEMES.length;
+  $("themeName").textContent = THEMES[themeIndex].name;
+  $("frameChips").hidden = THEMES[themeIndex].id !== "classic"; // themes bring their own colours
+  drawStrip();
+}
+$("themePrev").addEventListener("click", () => setTheme(-1));
+$("themeNext").addEventListener("click", () => setTheme(1));
+
+// Left/right arrow keys work too
+document.addEventListener("keydown", (e) => {
+  if (review.hidden) return;
+  if (e.key === "ArrowLeft") setTheme(-1);
+  if (e.key === "ArrowRight") setTheme(1);
 });
 
 startCamera();
