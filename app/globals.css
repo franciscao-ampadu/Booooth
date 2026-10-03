@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f5f4f1;
+  --ink: #141414;
+  --muted: #6b7280;
+  --body: #4b5563;
+  --accent: #ff4d6d;
+  --friend: #3a86ff;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-body: var(--body);
+  --color-accent: var(--accent);
+  --color-friend: var(--friend);
+  --font-display: var(--font-montserrat), sans-serif;
+  --font-hand: var(--font-gloria), cursive;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  color: var(--muted);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--ink);
+}
+
+/* Hand-drawn, wobbly outlines. The "a" and "b" variants mirror each other so
+   nested boxes look like they were sketched separately. */
+.wobble-a {
+  border-radius: 160px 8px 140px 8px / 8px 140px 8px 160px;
+}
+.wobble-b {
+  border-radius: 8px 160px 8px 140px / 140px 8px 160px 8px;
+}
+.wobble-c {
+  border-radius: 140px 8px 160px 8px / 8px 160px 8px 140px;
+}
+.wobble-inner-a {
+  border-radius: 6px 110px 6px 120px / 110px 6px 120px 6px;
+}
+.wobble-inner-b {
+  border-radius: 110px 6px 100px 6px / 6px 100px 6px 110px;
+}
+
+/* Hatched fill standing in for photo thumbnails. */
+.hatch {
+  background: repeating-linear-gradient(45deg, #e4e1db 0 4px, var(--paper) 4px 8px);
+}
+.hatch-white {
+  background: repeating-linear-gradient(45deg, #e4e1db 0 4px, #fff 4px 8px);
+}
+
+/* Buttons */
+.btn-booth,
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 3.5px solid #1e2430;
+  color: #1e2430;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+.btn-booth {
+  background: #eef0f3;
+}
+.btn-booth:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--ink);
+}
+.btn-outline {
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.map-pin {
+  transition:
+    width 0.2s,
+    height 0.2s,
+    transform 0.2s;
+}
+.map-pin:hover {
+  transform: translateY(-3px);
+}
