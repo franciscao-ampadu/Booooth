@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booooth · Login</title>
+    <title>Booooth · Create Account</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,16 +18,15 @@
 
         <!-- shutter button on TOP of the camera -->
         <div class="shutter-wrap">
-            <span class="shutter-label">press to log in</span>
-            <button type="submit" form="loginForm" id="shutter" class="shutter"
-                    aria-label="Take the photo and log in"></button>
+            <span class="shutter-label">press to sign up</span>
+            <button type="submit" form="signupForm" id="shutter" class="shutter"
+                    aria-label="Take the photo and create your account"></button>
         </div>
 
         <!-- mode dial on top -->
         <div class="mode-dial" aria-hidden="true"></div>
 
         <div class="camera-body wobble-a">
-            <!-- top strip of the back -->
             <div class="camera-top">
                 <div class="eyepiece" aria-hidden="true"></div>
                 <h1 class="camera-title">BOOOOTH</h1>
@@ -37,10 +36,13 @@
             <!-- back of the camera: screen + controls -->
             <div class="camera-back">
                 <div class="lcd wobble-c">
-                    <form id="loginForm" class="login-form">
-                        <div class="tagline">say cheese!</div>
+                    <form id="signupForm" class="login-form signup-form">
+                        <div class="tagline">join the booth!</div>
                         <label>username
-                            <input type="text" name="username" autocomplete="username">
+                            <input type="text" name="username" autocomplete="username" required>
+                        </label>
+                        <label>email
+                            <input type="email" name="email" autocomplete="email" required>
                         </label>
                         <label>password
                             <input type="password" name="password" autocomplete="current-password">
@@ -60,13 +62,10 @@
         </div>
     </div>
 
-
-    <a href="createaccount.html" class="create-account-button"> Create Account
-    </a>
-
+    <a href="login.html" class="create-account-button">Already have an account? Log in</a>
 </main>
 
-    <div class="flash" id="flash" aria-hidden="true"></div>
-    <script src="javascript/auth.js"></script>
+<div class="flash" id="flash" aria-hidden="true"></div>
+<script src="javascript/create-account.js"></script>
 </body>
 </html>
