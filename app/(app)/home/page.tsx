@@ -43,11 +43,41 @@ export default async function HomePage() {
       </header>
 
       <div className="mt-4 space-y-4">
+        <BoothCard />
         <MapCard />
         <PostPhotoCard userId={profile.id} />
         <FriendsPanel myId={profile.id} initialState={friends} />
       </div>
     </main>
+  );
+}
+
+function BoothCard() {
+  return (
+    <Link
+      href="/enter"
+      className="group relative flex h-36 items-end overflow-hidden rounded-2xl border border-line bg-[#F6E2BD] p-5 text-ink-warm no-underline shadow-[0_4px_24px_rgba(31,27,22,0.06)]"
+    >
+      {/* A little strip peeking out */}
+      <div
+        aria-hidden
+        className="absolute top-4 right-20 flex w-12 rotate-6 flex-col gap-1 border-2 border-ink-warm bg-white p-1 transition-transform group-hover:-translate-y-1"
+      >
+        {[0, 1, 2, 3].map((i) => (
+          <span key={i} className="h-5 border border-ink-warm bg-[#E9B872]" />
+        ))}
+      </div>
+      <div className="relative">
+        <h2 className="font-heading text-2xl font-semibold">Step into the booth</h2>
+        <p className="text-sm text-muted-warm">Four shots, one strip, pinned where you are.</p>
+      </div>
+      <span
+        aria-hidden
+        className="relative ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink-warm text-xl text-cream transition-transform group-hover:translate-x-0.5"
+      >
+        →
+      </span>
+    </Link>
   );
 }
 

@@ -188,9 +188,9 @@ function Hero() {
               style={{ top: "82%", transform: "rotate(-1deg)" }}
             />
             <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3">
-              <a href="#how" className="btn-booth gap-3 px-[34px] py-5 text-[30px]">
+              <Link href="/enter" className="btn-booth gap-3 px-[34px] py-5 text-[30px]">
                 step inside <span className="text-[28px]">→</span>
-              </a>
+              </Link>
               <div className="bg-paper px-1.5 font-hand text-base">
                 it&apos;s free. bring friends.
               </div>
@@ -419,11 +419,11 @@ function GetStarted() {
         Your seat&apos;s free.
       </h2>
       <div className="flex flex-wrap justify-center gap-4">
-        <Link href="/login" className="btn-booth px-[30px] py-4 text-[22px]">
-          continue with Google
+        <Link href="/signup" className="btn-booth px-[30px] py-4 text-[22px]">
+          create an account
         </Link>
         <Link href="/login" className="btn-outline px-[30px] py-4 text-[22px]">
-          email me a link →
+          log in →
         </Link>
       </div>
       <div className="font-hand text-[17px]" style={{ transform: "rotate(-1.5deg)" }}>

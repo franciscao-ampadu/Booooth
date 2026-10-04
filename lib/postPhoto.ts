@@ -70,6 +70,8 @@ export async function postPhoto(
     lat: number;
     lng: number;
     placeName: string | null;
+    /** Booth filter/theme, e.g. "vintage" or "autumn". */
+    filter?: string | null;
   },
 ): Promise<string> {
   // Storage RLS only allows uploads into my own "<user_id>/" folder.
@@ -92,6 +94,7 @@ export async function postPhoto(
       lat: input.lat,
       lng: input.lng,
       place_name: input.placeName,
+      filter: input.filter ?? null,
     })
     .select("id")
     .single();
