@@ -6,12 +6,9 @@ Photo Booth is an interactive, browser-based experience designed to capture the 
 
 From the moment users arrive, the experience is built to feel playful and immersive. Create an account, step through the animated booth entrance, pose for a four-shot photo session, customise your photo strip, and save the finished memory to your device.
 
-But Photo Booth goes beyond simply taking pictures. Finished photo strips can also be **pinned to a shared digital map**, turning individual snapshots into a visual collection of memories shared between friends — wherever they are.
-
-Built during a hackathon, Photo Booth combines **nostalgia, creativity and modern web technology** to make capturing memories feel a little more special.
+But Photo Booth goes beyond simply taking pictures. Finished photo strips can also be **pinned to a shared digital map**, turning individual snapshots into a visual collection of memories shared between friends, wherever they are.
 
 A photobooth in your pocket, and a map of every moment with your friends.
-Built with Next.js, React, Tailwind and Supabase.
 
 ## 🏆 Hackathon Project
 
@@ -20,6 +17,7 @@ Photo Booth was developed as a hackathon project, combining frontend development
 Our goal was simple:
 **Don't just build a camera — build the feeling of a photo booth**.
 
+**Booooth**: https://booooth-app.netlify.app
 
 ## 🧠 What we learned
 
@@ -68,26 +66,123 @@ The interface includes details inspired by a physical camera:
  - Smooth transitions between pages
 
 
-## 🛠️ Tech stack
+## 🛠️ Tech Stack
 
-| Layer | Choice |
+| Layer | Technology |
 |---|---|
-| Frontend | Plain **HTML, CSS and JavaScript** |
+| Framework | **Next.js** |
+| Frontend | **React + TypeScript** |
+| Styling | **Tailwind CSS + custom CSS** |
+| Authentication | **Supabase Auth** |
+| Database | **Supabase PostgreSQL** |
+| Storage | **Supabase Storage** |
 | Camera | Browser `getUserMedia` API |
-| Sounds | Web Audio API (generated beeps and shutter click) + an `.mp3` for login |
-| Backend / auth | [Supabase](https://supabase.com) (Auth with email + Google; database and storage planned) |
+| Photo Processing | HTML Canvas API |
+| Authentication Providers | Email/Password + Google OAuth |
 | Hosting | Netlify |
 
+## 📁 (General) File Structure
 
-## Team
+The project follows the **Next.js App Router** structure, with reusable components and backend utilities separated from the main application pages.
 
-| Name | Contact Email |
-|---|---|
-| Suprita Reddy Cenkeramaddi| supritareddy07@gmail.com |
-| Ayesha Mujahid | ayesha.mujahid876@gmail.com |
-| Malin Ommundsen| ommundsen.malin@gmail.com |
-| Francisca Obenewaa Ampadu | franciscao.ampadu@gmail.com |
-| Sree Harshini Ravi | sreeharshiniravi@gmail.com |
+```text
+photobooth-project/
+├── app/                          # Next.js App Router: every folder = a URL
+│   ├── layout.tsx                # Root layout: <html>, fonts, globals.css
+│   ├── page.tsx                  # "/" landing page
+│   ├── globals.css               # Tailwind + shared colours, wobbly borders, map pin styles
+│   ├── favicon.ico
+│   ├── (booth)/                  # Hand-drawn "sketch" pages
+│   │   ├── layout.tsx            # Wraps pages in .bm-sketch, loads sketch.css
+│   │   ├── sketch.css            # All styles for login/signup/enter/booth
+│   │   ├── login/page.tsx
+│   │   ├── signup/page.tsx
+│   │   ├── enter/page.tsx
+│   │   └── booth/page.tsx
+│   ├── (app)/                    # Clean "app" pages
+│   │   ├── layout.tsx            # Cream background, Bricolage + Inter fonts
+│   │   ├── home/page.tsx
+│   │   ├── onboarding/page.tsx
+│   │   └── map/
+│   │       ├── layout.tsx        # Page title
+│   │       └── page.tsx
+│   └── auth/
+│       ├── callback/route.ts     # OAuth / email-link landing
+│       └── signout/route.ts      # POST to log out
+│
+├── components/
+│   ├── Avatar.tsx                # Round avatar, pink ring = me, blue = friend
+│   ├── sketch/                   # Components for the (booth) pages
+│   │   ├── CameraShell.tsx       # The drawn camera frame + shutter button
+│   │   ├── CameraLogin.tsx       # Login form on the camera "screen"
+│   │   ├── CameraSignup.tsx      # Sign-up form on the camera "screen"
+│   │   ├── EnterBooth.tsx        # SVG booth with curtain animation
+│   │   ├── FallingLeaves.tsx     # Random autumn leaves (browser only)
+│   │   └── PhotoBooth.tsx        # Camera, countdown, strip, posting
+│   ├── auth/
+│   │   └── OnboardingForm.tsx    # Username + location permission
+│   ├── home/
+│   │   ├── PostPhotoCard.tsx     # Upload a photo from the phone instead
+│   │   ├── LocationPicker.tsx    # Small map: drag to choose a spot
+│   │   └── FriendsPanel.tsx      # Search, requests, friend list
+│   ├── map/
+│   │   ├── MapView.tsx           # Leaflet map, pins, locate-me
+│   │   ├── PhotoSheet.tsx        # Bottom sheet with the strip details
+│   │   └── FilterChips.tsx       # All / Me / Friends
+│   └── landing/
+│       └── MapDemo.tsx           # Fake interactive map on the landing page
+│
+├── lib/                          # Logic with no UI
+│   ├── strip.ts                  # Drawing the photo strip on a canvas
+│   ├── postPhoto.ts              # Upload + save a photo, reverse geocoding
+│   ├── photos.ts                 # Load photos for the map (+ demo data)
+│   ├── friends.ts                # Friend requests and search
+│   ├── geo.ts                    # Get the user's location, error messages
+│   ├── safeNext.ts               # Safe "where to go after login"
+│   ├── timeAgo.ts                # "5 min ago"
+│   └── supabase/
+│       ├── env.ts                # Reads the two env variables
+│       ├── client.ts             # Supabase client for the browser
+│       └── server.ts             # Supabase client for the server + getAuthState()
+│
+├── public/
+│   └── sounds/login-shutter.mp3  # Shutter sound on login/sign-up
+│
+├── supabase/
+│   └── schema.sql                # Tables, RLS policies, storage bucket
+│
+├── proxy.ts                      # Runs on every request, refreshes the session
+├── next.config.ts
+├── tsconfig.json                 # "@/..." import alias = project root
+├── eslint.config.mjs
+├── postcss.config.mjs            # Tailwind plugin
+├── package.json
+├── .env.example                  # Template for .env.local
+└── README.md
+```
+
+### 🧭 Application Flow
+
+```text
+Landing Page
+     ↓
+Login / Sign Up
+     ↓
+Onboarding
+     ↓
+Booth Entrance
+     ↓
+Photo Booth
+     ↓
+Customise Photo Strip
+     ↓
+Download or Post
+     ↓
+Shared Memory Map
+```
+
+The project separates the **photo booth experience**, **main application**, **reusable components**, and **Supabase/database logic**, making the codebase easier to navigate and extend.
+
 ## Running it locally
 
 1. Install dependencies: `npm install`
@@ -97,6 +192,7 @@ The interface includes details inspired by a physical camera:
 
 The database tables and storage bucket are in `supabase/schema.sql` (run it once
 in the Supabase SQL editor).
+
 
 ## Where things are
 
@@ -118,8 +214,13 @@ Static files such as sounds go in `public/`.
 
 The flow: log in → `/enter` → `/booth` → **Post** pins the strip on `/map`.
 
-## Git workflow
-* Committing = "#issue_number feat/bug: Commit message here"
-* Frequent merges from main into individual feature branches
-* Always merge main into feature branches and deal with merge conflicts
-* Merge requests are always reviewed by another person
+
+## Team
+
+| Name | Contact Email |
+|---|---|
+| Suprita Reddy Cenkeramaddi| supritareddy07@gmail.com |
+| Ayesha Mujahid | ayesha.mujahid876@gmail.com |
+| Malin Ommundsen| ommundsen.malin@gmail.com |
+| Francisca Obenewaa Ampadu | franciscao.ampadu@gmail.com |
+| Sree Harshini Ravi | sreeharshiniravi@gmail.com |
