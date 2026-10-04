@@ -27,12 +27,13 @@ form.addEventListener("submit", async (event) => {
         password: password,
 
         options: {
+            emailRedirectTo: new URL("enter.html", window.location.href).href,
             data: {
                 username: username,
                 full_name: username,
                 display_name: username
             }
-        }
+}
     });
 
     // If account creation failed
@@ -70,3 +71,4 @@ window.addEventListener("pageshow", () => {
     camera.classList.remove("shooting");
     flash.classList.remove("flash-in");
 });
+
