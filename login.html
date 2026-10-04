@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booooth · Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Montserrat:wght@400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/auth.css">
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <div class="camera" id="camera">
+
+        <!-- shutter button on TOP of the camera -->
+        <div class="shutter-wrap">
+            <span class="shutter-label">press to log in</span>
+
+            <button
+                type="submit"
+                form="loginForm"
+                id="shutter"
+                class="shutter"
+                aria-label="Take the photo and log in">
+            </button>
+        </div>
+
+        <!-- mode dial on top -->
+        <div class="mode-dial" aria-hidden="true"></div>
+
+        <div class="camera-body wobble-a">
+
+            <!-- top strip of the back -->
+            <div class="camera-top">
+
+                <div class="eyepiece" aria-hidden="true"></div>
+
+                <h1 class="camera-title">BOOOOTH</h1>
+
+                <div
+                    class="camera-flash-window hatch"
+                    aria-hidden="true">
+                </div>
+
+            </div>
+
+            <!-- back of camera -->
+            <div class="camera-back">
+
+                <div class="lcd wobble-c">
+
+                    <form id="loginForm" class="login-form">
+
+                        <div class="tagline">
+                            say cheese!
+                        </div>
+
+                        <!-- EMAIL -->
+                        <label>
+                            email
+
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                autocomplete="email"
+                                required
+                            >
+                        </label>
+
+                        <!-- PASSWORD -->
+                        <label>
+                            password
+
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                autocomplete="current-password"
+                                required
+                            >
+                        </label>
+
+                        <!-- ERROR MESSAGE -->
+                        <p id="loginError"></p>
+
+                        <!-- GOOGLE LOGIN -->
+                        <div class="google-login-wrap">
+
+                            <span class="login-divider">
+                                or
+                            </span>
+
+                            <button
+                                type="button"
+                                id="googleLogin"
+                                class="google-login">
+                                sign in with Google
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <!-- camera controls -->
+                <div class="controls" aria-hidden="true">
+
+                    <div class="dpad">
+                        <div class="dpad-center"></div>
+                    </div>
+
+                    <div class="small-buttons">
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="thumb-grip"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <a href="createaccount.html" class="create-account-button"> Create Account
+    </a>
+
+</main>
+
+
+<!-- CAMERA FLASH -->
+<div
+    class="flash"
+    id="flash"
+    aria-hidden="true">
+</div>
+
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- SHARED SUPABASE CLIENT -->
+<script src="javascript/supabase.js"></script>
+
+<!-- LOGIN LOGIC -->
+<script src="javascript/auth.js"></script>
+
+</body>
+</html>
